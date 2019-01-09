@@ -1,0 +1,95 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+
+int isPrime(long long int n)
+{
+    for(int i=2;i*i<n;i++)
+    if(n%i==0)
+    return 0;
+
+    return 1;
+}
+
+int gcd(long long int a,long long int b)
+{
+    int t;
+    if(b>a)
+		{
+			t=a;
+			a=b;
+			b=t;
+		}
+
+		while(a%b!=0)
+		{
+			t = a%b;
+			a = b;
+			b = t;
+		}
+
+		return b;
+}
+int calculate(long long int a,long long int b,long long int n)
+{
+    long long int i, temp;
+	temp =a;
+	for(i=2;i<=b;i++)
+	{
+		a=(a*temp) % n;
+	}
+
+	return a;
+}
+int main() {
+	char input[50],decrpyt[50];
+	cin>>input;
+	int encrpyt[50];
+	long long int p,q;
+
+	do
+	{
+		cin>>p;
+	}while(!isPrime(p));
+
+	do
+	{
+		cin>>q;
+	}while(!isPrime(q));
+
+	long long int n=p*q;
+	long long int phi=(p-1)*(q-1);
+	long long int e=2;
+
+	while(e<phi)
+	{
+	    if(gcd(e,phi)==1)
+	    break;
+	    else
+	    e++;
+	}
+	cout<<"e="<<e<<endl;
+	long long int d=2;
+	for(d=2;d<phi;d++)
+	{
+	    if(  (d * e) % phi == 1  )
+	    break;
+	}
+	cout<<"d="<<d<<endl;
+	int i=0,j=0,k=0;
+	for(i=0,j=0,k=0;input[i]!=0;i++)
+	{
+	    encrpyt[j++]=calculate(input[i]-'a',e,n);
+
+	    decrpyt[k++]=calculate(encrpyt[i],d,n) +'a';
+	}
+	for(int m=0;m<j;m++)
+	cout<<encrpyt[m];
+	cout<<endl;
+	decrpyt[k]='\0';
+	cout<<decrpyt<<endl;
+
+	return 0;
+}
